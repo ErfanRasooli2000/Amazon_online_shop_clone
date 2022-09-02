@@ -18,14 +18,12 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('subject_id');
 
-            $table->string('page_title');
-            $table->string('page_text');
-            $table->string('page_file');
-            $table->unsignedBigInteger('main_product_id');
+            $table->string('page_title')->nullable();
+            $table->string('page_text')->nullable();
+            $table->string('page_file')->nullable();
 
             $table->timestamps();
 
-            //$table->foreign('main_product_id')->references('id')->on('products');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
         });
     }

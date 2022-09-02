@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubjectController;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -134,3 +136,16 @@ Route::prefix('admin')->group(function() {
     Route::get('/order/send/{order_id}',[OrderController::class,'send'])->name('admin.orders.send')->middleware('auth:admin');
     Route::get('/order/deliver/{order_id}',[OrderController::class,'deliver'])->name('admin.orders.deliver')->middleware('auth:admin');
 }) ;
+
+
+Route::get('/get_data' , function (){
+    $all = DB::table('images')->get();
+    foreach ($all as $single)
+    {
+        echo "[
+            'file'=>'" . $single->file . "',
+            'order'=>" . $single->order . ",
+            'product_id'=>" . $single->product_id . "
+        ],"."<br>";
+    }
+});
