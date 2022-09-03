@@ -2,21 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Favourite;
-use App\Models\SubCategory;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-//    public function __construct()
-//    {
-//        $this->middleware('auth');
-//    }
 
     /**
      * Show the application dashboard.
@@ -25,53 +14,28 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $cellphone = array();
-        $laptop = array();
-        $display = array();
-        $speaker = array();
-        for($id=1 ; $id<=4 ; $id++)
+        for($id=1 ; $id<5 ; $id++)
         {
-            $favs = array();
-            $products = SubCategory::where('category_id',$id)->join('products','sub_categories.id','=','products.subcategory_id')->join('images' , function ($join){
-                $join->on('products.id','=','images.product_id')->where('order',1);
-            })->get();
-            foreach($products as $product)
-            {
-                $favs[$product->product_id] = Favourite::where('product_id',$product->product_id)->count();
-            }
-            arsort($favs);
-
-            $count = 0;
-            $top_favs = array();
-            foreach($favs as $key => $value)
-            {
-                $count++;
-                if($count>=4)
-                {
-                    break;
-                }
-                $top_favs[] = SubCategory::where('category_id',$id)->join('products','sub_categories.id','=','products.subcategory_id')
-                    ->join('images',function ($join){
-                        $join->on('products.id','=','images.product_id')->where('order',1);
-                    })->where('product_id',$key)->firstOrFail();
-            }
-            switch ($id)
-            {
-                case 1:
-                    $cellphone = $top_favs;
-                    break;
-                case 2:
-                    $laptop =  $top_favs;
-                    break;
-                case 3:
-                    $display = $top_favs;
-                    break;
-                case 4:
-                    $speaker = $top_favs;
-                    break;
-            }
+            $products[$id] = DB::table('products')
+                ->leftJoin('sub_categories' , 'products.subcategory_id' , 'sub_categories.id')
+                ->leftJoin('categories' , 'sub_categories.category_id' , 'categories.id')
+                ->leftJoin('images' , 'products.id' , 'images.product_id')
+                ->leftjoin(DB::raw('(select f.product_id as product_id , COUNT(*) as count from favourites f GROUP by f.product_id) AS q') , 'products.id' , 'q.product_id')
+                ->where('categories.id' , '=' , $id)
+                ->where('images.order' , '=' , 1)
+                ->orderByDesc('count')
+                ->limit(3)
+                ->get();
         }
 
-        return view('index',compact('cellphone','laptop','display','speaker'));
+        return view('index',
+            [
+                'cellphone' => $products[1],
+                'laptop' => $products[2] ,
+                'display' => $products[3],
+                'speaker' => $products[4]
+            ]);
+
+        //TODO : refactor next slide for top of the home page
     }
 }

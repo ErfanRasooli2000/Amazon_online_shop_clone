@@ -426,6 +426,5 @@ class DatabaseSeeder extends Seeder
             [ 'file'=>'public/images/Ilximu7l6xhpCvdnWgL7uMrhteFRjotTckes0RK9.jpg', 'order'=>3, 'product_id'=>26 ],
 
         ]);
-
     }
 }

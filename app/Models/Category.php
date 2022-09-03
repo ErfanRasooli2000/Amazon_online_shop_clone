@@ -19,4 +19,20 @@ class Category extends Model
     {
         return $this->hasMany(SubCategory::class);
     }
+
+    public function products()
+    {
+        return $this->products_withimage();
+        return $this->hasManyThrough(Product::class , SubCategory::class , 'category_id' , 'subcategory_id' , 'id' , 'id');
+    }
+
+    public function products_withimage()
+    {
+        return $this
+            ->hasManyThrough(Product::class , SubCategory::class , 'category_id' , 'subcategory_id' , 'id' , 'id')
+            ->with('images' , function ($query) {
+                $query->where('order', '=' , 1);
+            })
+            ->with('favourites');
+    }
 }
