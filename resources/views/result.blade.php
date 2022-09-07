@@ -1,4 +1,4 @@
-@extends('layout.master')
+{{--@extends('layout.master')--}}
 @section('style')
     <link rel="stylesheet" href="{{url('asset/css/result.css')}}">
 @endsection
@@ -60,7 +60,7 @@
         <div class="col-12 col-sm-7 col-md-8 col-lg-9 col-xxl-10">
             <div class="container-fluid p-5">
                 <div class="row">
-                    @foreach($product as $pro)
+                    @foreach($products as $pro)
                         <div class="col-12 col-md-6 col-lg-4 col-xxl-3 search_result position-relative">
                             <div class="p-0 mt-3 result_image_wrapper">
                                 <a href="/product/{{$pro->product_id}}" class="product-link">

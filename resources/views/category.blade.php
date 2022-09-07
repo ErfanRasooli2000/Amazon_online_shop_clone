@@ -27,7 +27,7 @@
                                 <div class="container-fluid">
                                     <div class="row justify-content-evenly">
                                         @php($count=0)
-                                        @foreach($top_sales as $sale)
+                                        @foreach($sales as $sale)
                                         @php($count++)
                                         @switch($count)
                                             @case(1)
@@ -80,7 +80,7 @@
                                 <div class="container-fluid">
                                     <div class="row justify-content-evenly">
                                         @php($count=0)
-                                        @foreach($top_rates as $sale)
+                                        @foreach($rates as $sale)
                                         @php($count++)
                                         @switch($count)
                                             @case(1)
@@ -133,7 +133,7 @@
                                 <div class="container-fluid">
                                     <div class="row justify-content-evenly">
                                         @php($count=0)
-                                        @foreach($top_favs as $sale)
+                                        @foreach($favourites as $sale)
                                         @php($count++)
                                         @switch($count)
                                             @case(1)
